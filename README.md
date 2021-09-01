@@ -12,3 +12,6 @@ Email   : lamhotsimamora36@gmail.com
 Company : pdrtechnology.net
 
 
+<a target="_blank" href="https://lamhotsimamora.github.io/monitoring-trading-live-indodax/">DEMO</a>
+
+
