@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring & Alarm Live CryptoCurrency Indodax</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/toast.css">
+    <script src="assets/js/bootstrap.js"></script>
+    <script src="assets/js/jnet.js"></script>
+    <script src="assets/js/sweetalert.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/vue-router.js"></script>
+    <script src="assets/js/chart.js"></script>
+    <script src="assets/js/wavesurfer.js"></script>
+    <script src="assets/js/toast.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <a class="navbar-brand" href=".">REALTIME - BITCOIN</a>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a target="_blank" class="nav-link"
+                            href="https://github.com/lamhotsimamora/monitoring-trading-live-indodax">Fork Me</a>
+                    </li>
+                    <li class="nav-item">
+                        <a target="_blank" class="nav-link"
+                            href="https://github.com/lamhotsimamora/">Github</a>
+                    </li>
+                    <li class="nav-item">
+                        <a target="_blank" class="nav-link"
+                            href="README.md">ReadMe</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="button">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <br>
+
+    <div class="container" id="realtime">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <div v-if="loading">
+                        <center>
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
+                        </center>
+                    </div> <br>
+                    <strong>
+                        <div class="alert alert-danger" role="alert">
+                            <h4>LIVE & REALTIME</h4>
+                        </div>
+                        <small>Date : <i style="color: red">{{ today }}</i></small>
+                    </strong> <br> <br>
+                    <button @click="showPriceFromStorage" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal_set_alarm">
+                        <strong>Set Alarm For BITCOIN</strong>
+                    </button>
+                    <hr>
+                    <small>
+                        <strong>Status Alarm : <i style="color: purple">{{ status_alarm }}</i></strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <div id="app" class="container">
+        <div class="card">
+            <div class="card-body">
+                <div id="tmplate_view">
+
+                    <center>
+
+                        <span class="badge rounded-pill bg-primary">
+                            <h5>
+                                1 BTC = {{ btc_price_last }}
+                            </h5>
+                        </span>
+                        <br>
+                        <span class="badge rounded-pill bg-danger">
+                            <h5>
+                                Low = {{ btc_price_low }}
+                            </h5>
+                        </span>
+                        <br>
+                        <span class="badge rounded-pill bg-success">
+                            <h5>
+                                High = {{ btc_price_high }}
+                            </h5>
+                        </span>
+                    </center>
+                    <hr>
+                    
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table table-light table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="color: brown" scope="col">Coin</th>
+                                    <th scope="col" style="color: blue">Last Price</th>
+                                    <th scope="col" style="color: red">Low Price</th>
+                                    <th scope="col" style="color: green">High Price</th>
+                                    <th scope="col">Volume</th>
+                                    <th scope="col">Buy</th>
+                                    <th scope="col">Sell</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(d,i) in data_all_coin">
+                                    <th v-html="upperCase(i)" scope="row"></th>
+                                    <td style="color: blue" v-html="moneyFormat(d.last)"></td>
+                                    <td style="color: red" v-html="moneyFormat(d.low)"></td>
+                                    <td style="color: green" v-html="moneyFormat(d.high)"></td>
+                                    <td v-html="moneyFormat(d.vol_idr)"></td>
+                                    <td v-html="moneyFormat(d.buy)"></td>
+                                    <td v-html="moneyFormat(d.sell)"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- <canvas id="candle_chart_history"></canvas> -->
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_set_alarm" tabindex="-1" aria-labelledby="modal_set_alarm_label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_set_alarm_label">Set Alarm For <strong>BITCOIN </strong> 
+                        | <strong v-html="(price_last_bitcoin)"></strong>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  
+                    <div v-html="displayPrice(price_more_than)" class="alert alert-secondary" role="alert">
+                       
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Hidupkan alarm jika harga >= </span>
+                        <input type="number" @keypress="enterSetAlarm" 
+                        v-model="price_more_than" ref="price_more_than" 
+                        @keydown="displayPrice"
+                        class="form-control" placeholder="Rp" aria-describedby="basic-addon1">
+                    </div>
+                    <hr>
+                    <div v-html="displayPrice(price_less_than)" class="alert alert-secondary" role="alert">
+                       
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon2">Hidupkan alarm jika harga <= </span>
+                        <input type="number" @keypress="enterSetAlarm"  
+                        v-model="price_less_than" ref="price_less_than" class="form-control" placeholder="Rp" aria-describedby="basic-addon1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" @click="setAlarm">Set Alarm</button>
+                    <button type="button" class="btn btn-danger" @click="stopAlarm">Stop Alarm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="alarm_sound" style="display: none;"></div>
+    <script src="init.js"></script>
+    <script src="helper.js"></script>
+    <script src="data-chart.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
