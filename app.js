@@ -45,6 +45,7 @@ var $realtime = Vue.createApp(Realtime).mount('#realtime');
 var App = {
   data() {
     return {
+      total_coin: 0,
       data_all_coin: null,
       btc_price_last: 0,
       btc_price_low: 0,
@@ -70,12 +71,6 @@ var App = {
       var _URL = null;
       switch (coin) {
         case 'BTC':
-          _URL_ = API_BITCOIN_DATA;
-          break;
-        case 'ETH':
-          _URL_ = API_BITCOIN_DATA;
-          break;
-        case 'ADA':
           _URL_ = API_BITCOIN_DATA;
           break;
         case 'ALL':
@@ -154,7 +149,8 @@ var App = {
       var $this = this;
       this.loadDataCoin('ALL', function (obj) {
         $this.data_all_coin = obj.tickers;
-        console.log('Load All');
+        $this.total_coin = Object.keys(obj.tickers).length;
+        console.log('Load All Coin');
       });
     }
   },
