@@ -12,8 +12,8 @@ var Realtime = {
       var m_p = _get('_ALARM_MORE_THAN_');
       var l_p = _get('_ALARM_LESS_THAN_');
 
-      ModalAlarm.price_more_than = m_p;
-      ModalAlarm.price_less_than = l_p;
+      $alarm.price_more_than = m_p;
+      $alarm.price_less_than = l_p;
       $alarm .displayLastBitcoin();
     },
     loadDateTime: function () {
