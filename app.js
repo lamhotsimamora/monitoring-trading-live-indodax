@@ -1,10 +1,12 @@
 var Realtime = {
   data() {
     return {
-      API_DATE_TIME: 'http://worldtimeapi.org/api/timezone/asia/jakarta',
+      API_DATE_TIME1: 'http://worldtimeapi.org/api/timezone/asia/jakarta',
+      API_DATE_TIME2: 'http://worldclockapi.com/api/json/utc/now',
       today: null,
       loading: false,
       status_alarm: null,
+      day : null
     }
   },
   methods: {
@@ -18,13 +20,15 @@ var Realtime = {
     },
     loadDateTime: function () {
       jnet({
-        url: this.API_DATE_TIME,
+        url: this.API_DATE_TIME2,
         method: 'GET'
       }).request($response => {
         if ($response) {
           const obj = JSON.parse($response);
           if (obj) {
-            this.today = obj.datetime;
+            var time = obj.currentDateTime;
+            this.today = time;
+            this.day = obj.dayOfTheWeek;
           }
         }
       });
